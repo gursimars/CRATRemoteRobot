@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.ossrs.gursimar.crat.MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:hint="Commander ID"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/commanderID"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="80dp"
+            android:layout_height="31dp"
+            android:layout_margin="5dp"
+            android:background="@color/colorAccent"
+            android:text="Next"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            android:onClick="setCommander" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <net.ossrs.gursimar.SrsCameraView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/glsurfaceview_camera"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="publish"
+            android:id="@+id/publish"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="5dp"
+            android:text="switch"
+            android:id="@+id/swCam"
+            android:layout_alignBottom="@+id/publish"
+            android:layout_toRightOf="@+id/publish" />
+
+        <Button
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="record"
+            android:id="@+id/record"
+            android:layout_alignBottom="@+id/publish"
+            android:layout_toRightOf="@id/swCam" />
+
+        <Button
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S Encode"
+            android:textSize="14sp"
+            android:id="@+id/swEnc"
+            android:layout_alignBottom="@+id/publish"
+            android:layout_toRightOf="@id/record"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        tools:ignore="WebViewLayout">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="center|bottom"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <LinearLayout
+            android:id="@+id/OneLight"
+            android:layout_weight=".25"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/black"
+            android:visibility="gone">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TwoLight"
+            android:layout_weight=".25"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/black">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ThreeLight"
+            android:layout_weight=".25"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/black">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/FourLight"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_weight=".25"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/black">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

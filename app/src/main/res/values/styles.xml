@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="CustomActionBar" parent="@android:style/Widget.Material.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+</resources>

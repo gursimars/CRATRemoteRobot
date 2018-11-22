@@ -1,0 +1,2 @@
+-keep class net.ossrs.gursimar.**{*;}
+-keep class net.ossrs.gursimar.SrsEncoder{*;}
