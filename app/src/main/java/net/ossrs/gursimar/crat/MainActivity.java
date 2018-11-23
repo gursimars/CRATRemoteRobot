@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -105,7 +106,7 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 
         // restore data.
-        sp = getSharedPreferences("Yasea", MODE_PRIVATE);
+        sp = getSharedPreferences("CRAT", MODE_PRIVATE);
         rtmpUrl = sp.getString("rtmpUrl", rtmpUrl);
 
         // initialize url.
@@ -119,7 +120,7 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
         mPublisher.setEncodeHandler(new SrsEncodeHandler(this));
         mPublisher.setRtmpHandler(new RtmpHandler(this));
         mPublisher.setRecordHandler(new SrsRecordHandler(this));
-        mPublisher.setPreviewResolution(360, 640);
+        mPublisher.setPreviewResolution(640, 360);
         mPublisher.setOutputResolution(360, 640);
         mPublisher.setVideoHDMode();
         mPublisher.startCamera();
@@ -341,6 +342,8 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
     @Override
     public void onRtmpConnected(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        // Stream Started
+        webView.loadUrl("javascript:SetActionDetails('STREAM_STARTED')");
     }
 
     @Override
@@ -354,6 +357,8 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
     @Override
     public void onRtmpStopped() {
         Toast.makeText(getApplicationContext(), "Stopped", Toast.LENGTH_SHORT).show();
+        // Stream Stop
+        webView.loadUrl("javascript:SetActionDetails('STREAM_ENDED')");
     }
 
     @Override
@@ -549,6 +554,43 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
         }
 
         @android.webkit.JavascriptInterface
+        public void startTheStream()
+        {
+            //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("rtmpUrl", rtmpUrl);
+            editor.apply();
+
+            mPublisher.startPublish(rtmpUrl);
+            mPublisher.startCamera();
+
+            if (btnSwitchEncoder.getText().toString().contentEquals("soft encoder")) {
+                Toast.makeText(getApplicationContext(), "Use hard encoder", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Use soft encoder", Toast.LENGTH_SHORT).show();
+            }
+            btnPublish.setText("stop");
+            btnSwitchEncoder.setEnabled(false);
+        }
+
+        @android.webkit.JavascriptInterface
+        public void stopTheStream()
+        {
+            mPublisher.stopPublish();
+            mPublisher.stopRecord();
+            btnPublish.setText("publish");
+            btnRecord.setText("record");
+            btnSwitchEncoder.setEnabled(true);
+        }
+
+        @android.webkit.JavascriptInterface
+        public void switchCamera()
+        {
+            mPublisher.switchCameraFace((mPublisher.getCamraId() + 1) % Camera.getNumberOfCameras());
+        }
+
+        @android.webkit.JavascriptInterface
         public void connected(String data)
         {
             Log.e("COMMANDER CONNECTED?", data);
@@ -561,7 +603,7 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
         public void run() {
 
             int battery = getBatteryPercentage(getApplicationContext());
-            String device = android.os.Build.DEVICE;
+            String device = getDeviceName();
             String model = android.os.Build.MODEL;
             String product = android.os.Build.PRODUCT;
 
@@ -570,10 +612,33 @@ public class MainActivity extends Activity implements RtmpHandler.RtmpListener,
             Log.d("MODEL ---- ", model);
             Log.d("PRODUCT ---- ", product);
 
-            webView.loadUrl("javascript:TestPhoneData('" + battery + "','" + device + "','" + model + "', '" + product + "')");
+            webView.loadUrl("javascript:TestPhoneData('" + battery + "','" + device + "','" + "" + "', '" + "" + "')");
             handler.postDelayed(this, 300000);
         }
     };
+
+    public String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.toLowerCase().startsWith(manufacturer.toLowerCase())) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+
+    private String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
 
     private void SendPhoneData()
     {
